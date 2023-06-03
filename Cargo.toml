@@ -1,0 +1,9 @@
+[package]
+name = "test-taskpin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+futures = "0.3.28"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
