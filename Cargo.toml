@@ -1,9 +1,16 @@
 [package]
-name = "test-taskpin"
+name = "scoped_tasks_prototype"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.65"
+license = "MIT"
+authors = ["Olivier FAURE <couteaubleu@gmail.com>"]
+description = "A quick-and-dirty attempt to get scoped tasks in Rust."
+repository = "https://github.com/PoignardAzur/scoped_tasks_prototype"
+categories = ["asynchronous", "concurrency"]
+readme = "README.md"
+keywords = ["async", "memory"]
 
-[dependencies]
+[dev-dependencies]
 futures = "0.3.28"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+tokio = { version = "1.28.2", features = ["rt", "macros", "rt-multi-thread"] }

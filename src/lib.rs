@@ -13,13 +13,15 @@ pub struct Bank {
 }
 
 pub struct Vault<'a, T> {
-    pub(crate) inner: &'a mut VaultInner<T>,
+    #[doc(hidden)]
+    pub inner: &'a mut VaultInner<T>,
 }
 
-pub(crate) struct VaultInner<T> {
-    pub value: T,
-    pub loan_count: AtomicUsize,
-    pub loan_mut_count: AtomicUsize,
+#[doc(hidden)]
+pub struct VaultInner<T> {
+    value: T,
+    loan_count: AtomicUsize,
+    loan_mut_count: AtomicUsize,
 }
 
 pub struct Loan<T> {
@@ -34,16 +36,13 @@ pub struct LoanMut<T> {
 
 // ---
 
+#[macro_export]
 macro_rules! vault {
     (
         $value:expr
     ) => {
-        &mut $crate::bank::Vault {
-            inner: &mut $crate::bank::VaultInner {
-                value: $value,
-                loan_count: 0.into(),
-                loan_mut_count: 0.into(),
-            },
+        &mut $crate::Vault {
+            inner: &mut $crate::VaultInner::new($value),
         }
     };
 }
@@ -56,9 +55,7 @@ impl Bank {
     }
 }
 
-impl<'a, T> Vault<'a, T> {
-    #[cfg(FALSE)]
-    #[allow(unused)]
+impl<T> VaultInner<T> {
     pub fn new(value: T) -> Self {
         Self {
             value,
@@ -66,7 +63,9 @@ impl<'a, T> Vault<'a, T> {
             loan_mut_count: 0.into(),
         }
     }
+}
 
+impl<'a, T> Vault<'a, T> {
     fn check_bank(&self, bank: &Bank) {
         // Make sure that current adress is within the payload of the bank,
         // eg that self with stay valid as long as the bank isn't dropped.
